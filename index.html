@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="cyan">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#3ee0ff" />
+<meta name="description" content="国敬贤，华北水利水电大学大一学生，喜欢 AI 视频和小工具。" />
+<title>国敬贤 · 个人主页</title>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --bg: #08090e;
+    --text: #eef2f9;
+    --muted: #98a2b6;
+    --line: rgba(255, 255, 255, .10);
+    --card: rgba(255, 255, 255, .045);
+    --radius: 20px;
+    --maxw: 980px;
+    --accent: #3ee0ff;
+    --accent-2: #6a5cff;
+    --accent-ink: #04121a;
+    color-scheme: dark;
+  }
+
+  html[data-theme="violet"] { --accent: #b388ff; --accent-2: #ff6fae; --accent-ink: #12071c; }
+  html[data-theme="amber"]  { --accent: #ffc247; --accent-2: #ff7a5c; --accent-ink: #1c1002; }
+  html[data-theme="mint"]   { --accent: #4ade9b; --accent-2: #38bdf8; --accent-ink: #04140d; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  a { color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---------- 背景氛围层 ---------- */
+  .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .orb {
+    position: absolute; border-radius: 50%;
+    transition: background .8s ease;
+  }
+  .o1 {
+    width: 70vmax; height: 70vmax; top: -34vmax; left: -24vmax; opacity: .22;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 66%);
+  }
+  .o2 {
+    width: 62vmax; height: 62vmax; bottom: -34vmax; right: -22vmax; opacity: .16;
+    background: radial-gradient(circle, var(--accent-2) 0%, transparent 66%);
+  }
+  .grid-floor {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 70%);
+    mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 70%);
+  }
+
+  /* ---------- 顶栏 ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(8, 9, 14, .62);
+    border-bottom: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+  }
+  .header-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 13px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none; font-weight: 700; font-size: 15px; letter-spacing: .01em;
+  }
+  .brand .mark {
+    width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: var(--accent-ink); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+    transition: background .5s ease;
+  }
+  .brand small { display: block; color: var(--muted); font-size: 11.5px; font-weight: 500; letter-spacing: .06em; }
+
+  .nav { display: flex; gap: 22px; }
+  .nav a { color: var(--muted); font-size: 14px; text-decoration: none; transition: color .25s ease; }
+  .nav a:hover { color: var(--text); }
+
+  .theme-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, .05);
+    color: var(--text); font: inherit; font-size: 13.5px; font-weight: 600;
+    transition: border-color .35s ease, background-color .25s ease, transform .2s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); background: rgba(255, 255, 255, .09); }
+  .theme-btn:active { transform: scale(.97); }
+  .swatch {
+    width: 14px; height: 14px; border-radius: 50%; flex: none;
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .07);
+    transition: background .5s ease;
+  }
+
+  /* ---------- 版心 / 首屏 ---------- */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 72px; }
+
+  .hero { position: relative; padding: 76px 0 60px; }
+  .hero::before {
+    content: ""; position: absolute; inset: -60px -20px auto -20px; height: 380px;
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 30%), var(--accent), transparent 62%);
+    opacity: .13; pointer-events: none; transition: background .4s ease;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, .04);
+    font-size: 13px; color: var(--muted);
+  }
+  .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex: none;
+    background: var(--accent); box-shadow: 0 0 12px var(--accent);
+    transition: background .5s ease;
+  }
+
+  h1 {
+    margin: 22px 0 16px;
+    font-size: clamp(40px, 8.5vw, 66px);
+    line-height: 1.05; letter-spacing: -.025em; font-weight: 800;
+  }
+  h1 .grad {
+    background: linear-gradient(96deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+
+  .lead {
+    margin: 0; max-width: 34em;
+    color: var(--muted); font-size: clamp(15px, 2.4vw, 17px); line-height: 1.9;
+  }
+  .lead strong { color: var(--text); font-weight: 600; }
+
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 22px; border-radius: 13px; border: 1px solid transparent;
+    font-size: 14.5px; font-weight: 600; text-decoration: none; cursor: pointer;
+    transition: transform .22s ease, box-shadow .3s ease, border-color .35s ease, background-color .3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    color: var(--accent-ink);
+    box-shadow: 0 14px 34px -16px var(--accent);
+  }
+  .btn-ghost { border-color: var(--line); background: rgba(255, 255, 255, .04); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* ---------- 通用区块 ---------- */
+  .section { padding: 54px 0; border-top: 1px solid var(--line); }
+  .section:first-of-type { border-top: 1px solid var(--line); }
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 26px; }
+  .section-head .num {
+    font-size: 12px; font-weight: 700; letter-spacing: .2em;
+    color: var(--accent); transition: color .35s ease;
+  }
+  h2 { margin: 0; font-size: clamp(21px, 4vw, 27px); letter-spacing: -.015em; }
+
+  .card {
+    padding: 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .018));
+    transition: border-color .35s ease, transform .25s ease, background-color .35s ease;
+  }
+  .card p { margin: 0 0 13px; color: var(--muted); font-size: 15px; line-height: 1.9; }
+  .card p:last-child { margin-bottom: 0; }
+
+  .about-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; }
+
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 15px; }
+  .facts li { display: flex; gap: 10px; font-size: 14.5px; color: var(--muted); line-height: 1.75; }
+  .facts .k {
+    flex: none; width: 50px; padding-top: 2px;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .08em;
+    color: var(--accent); transition: color .35s ease;
+  }
+  .facts b { color: var(--text); font-weight: 600; }
+
+  /* ---------- 三张卡片 ---------- */
+  .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .work-grid .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .work-grid h3 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 0 0 10px; font-size: 16.5px; letter-spacing: -.01em;
+  }
+  .icon {
+    width: 32px; height: 32px; border-radius: 10px; flex: none;
+    display: grid; place-items: center; font-size: 15px;
+    background: rgba(255, 255, 255, .06); border: 1px solid var(--line);
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+  .tag {
+    padding: 7px 14px; border-radius: 999px; font-size: 13px;
+    color: var(--muted); border: 1px solid var(--line); background: rgba(255, 255, 255, .03);
+    transition: color .3s ease, border-color .35s ease;
+  }
+  .tag:hover { color: var(--text); border-color: var(--accent); }
+
+  /* ---------- 联系方式 ---------- */
+  .contact-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 20px; }
+  .clink {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 15px 17px; border-radius: 15px;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, .03);
+    text-decoration: none; font-size: 14.5px; font-weight: 600;
+    transition: border-color .35s ease, transform .2s ease, background-color .3s ease;
+  }
+  .clink:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(255, 255, 255, .06); }
+  .clink small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; margin-top: 2px; }
+  .clink .arrow { color: var(--accent); font-size: 15px; transition: color .35s ease; }
+
+  /* ---------- 页脚 ---------- */
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 20px 44px; text-align: center;
+    color: var(--muted); font-size: 13px;
+  }
+  .site-footer .sep { opacity: .45; margin: 0 8px; }
+
+  /* ---------- 入场动画 ---------- */
+  .js .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.22, .7, .25, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 820px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .work-grid { grid-template-columns: 1fr; }
+    .hero { padding: 56px 0 44px; }
+  }
+
+  @media (max-width: 600px) {
+    .nav { display: none; }
+    .header-inner { padding: 11px 16px; }
+    main { padding: 0 16px 56px; }
+    .section { padding: 42px 0; }
+    .card { padding: 18px; }
+    .cta .btn { flex: 1 1 46%; padding: 12px 16px; }
+    .facts .k { width: 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <span class="orb o1"></span>
+  <span class="orb o2"></span>
+  <span class="grid-floor"></span>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true">GJX</span>
+      <span>国敬贤<small>AI 视频 · 小工具</small></span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a href="#about">关于</a>
+      <a href="#work">折腾</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换主题色">
+      <span class="swatch" aria-hidden="true"></span>
+      <span id="themeLabel">青色</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span>大一在读 · 华北水利水电大学</p>
+    <h1 class="reveal" style="--d:.06s">你好，我是<br /><span class="grad">国敬贤</span></h1>
+    <p class="lead reveal" style="--d:.12s">
+      我在华北水利水电大学读大一。喜欢<strong>用 AI 做视频</strong>，也喜欢<strong>写点小工具</strong>——
+      把脑子里冒出来的画面做成片子，把生活里重复琐碎的事交给代码。
+    </p>
+    <div class="cta reveal" style="--d:.18s">
+      <a class="btn btn-primary" href="#work">看看我在折腾什么</a>
+      <a class="btn btn-ghost" href="#contact">打个招呼</a>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-head reveal">
+      <span class="num">01</span>
+      <h2>关于我</h2>
+    </div>
+    <div class="about-grid">
+      <div class="card reveal" style="--d:.05s">
+        <p>
+          我是国敬贤，刚进大学的大一学生。比起按部就班，我更容易被「把想法变成能跑、能看的东西」这件事吸引：
+          一段提示词变成镜头，一段脚本变成一个能点的小网页。
+        </p>
+        <p>
+          现在主要在两个方向上花时间。一个是画面——用生成模型、剪辑和配乐做 AI 短视频，练分镜和节奏；
+          另一个是工具——需要什么就写什么，先让它能跑，再让它好用。
+        </p>
+        <p>
+          还在起步阶段，很多东西都是边学边做。如果你也在弄 AI 视频或者小工具，欢迎一起聊。
+        </p>
+        <div class="tags">
+          <span class="tag">AI 视频</span>
+          <span class="tag">提示词</span>
+          <span class="tag">剪辑</span>
+          <span class="tag">HTML / CSS / JS</span>
+          <span class="tag">Python 小脚本</span>
+          <span class="tag">边学边做</span>
+        </div>
+      </div>
+
+      <div class="card reveal" style="--d:.12s">
+        <ul class="facts">
+          <li><span class="k">在读</span><span><b>华北水利水电大学</b><br />大一</span></li>
+          <li><span class="k">在学</span><span>AI 视频生成与剪辑、<br />前端基础和一点算法</span></li>
+          <li><span class="k">在做</span><span>把自己用得上、<br />身边人也用得上小工具</span></li>
+          <li><span class="k">想要</span><span>做出让自己愿意<br />反复看、反复用的东西</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="section-head reveal">
+      <span class="num">02</span>
+      <h2>我在折腾什么</h2>
+    </div>
+    <div class="work-grid">
+      <article class="card reveal" style="--d:.04s">
+        <h3><span class="icon" aria-hidden="true">🎬</span>AI 视频</h3>
+        <p>从分镜、提示词到成片，试着让画面和音乐对上情绪。多数是短片、片段和一些失败了的实验。</p>
+      </article>
+      <article class="card reveal" style="--d:.10s">
+        <h3><span class="icon" aria-hidden="true">🛠️</span>小工具</h3>
+        <p>批量处理文件、统计时间、页面小部件……遇到麻烦就写一个，用完再慢慢改进。</p>
+      </article>
+      <article class="card reveal" style="--d:.16s">
+        <h3><span class="icon" aria-hidden="true">📚</span>学习记录</h3>
+        <p>大一课程和自学并行。踩过的坑、抄过的代码、想明白的原理，都记下来。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="section-head reveal">
+      <span class="num">03</span>
+      <h2>联系我</h2>
+    </div>
+    <div class="card reveal" style="--d:.05s">
+      <p>想聊 AI 视频、聊聊工具，或者只是打个招呼，都可以直接找我。回消息可能不快，但一定会看。</p>
+      <!-- 下面三个链接换成你自己的邮箱 / GitHub / B 站主页即可 -->
+      <div class="contact-links">
+        <a class="clink" href="mailto:guojingxian@example.com">
+          <span>邮箱<small>写信给我</small></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="clink" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+          <span>GitHub<small>代码和玩具</small></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="clink" href="https://space.bilibili.com/" target="_blank" rel="noopener noreferrer">
+          <span>哔哩哔哩<small>偶尔投稿</small></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  © <span id="year">2026</span> 国敬贤<span class="sep">·</span>用 HTML / CSS / JS 手写，没有框架
+</footer>
+
+<div class="sr-only" id="themeLive" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* ---------- 主题色切换 ---------- */
+  var THEMES = [
+    { id: 'cyan',   name: '青色', color: '#3ee0ff' },
+    { id: 'violet', name: '星紫', color: '#b388ff' },
+    { id: 'amber',  name: '琥珀', color: '#ffc247' },
+    { id: 'mint',   name: '薄荷', color: '#4ade9b' }
+  ];
+  var KEY = 'gjx-theme';
+
+  var btn = document.getElementById('themeBtn');
+  var label = document.getElementById('themeLabel');
+  var live = document.getElementById('themeLive');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  var current = 0;
+
+  function paint(theme, announce) {
+    root.setAttribute('data-theme', theme.id);
+    if (label) label.textContent = theme.name;
+    if (meta) meta.setAttribute('content', theme.color);
+    if (announce && live) live.textContent = '主题色已切换为' + theme.name;
+  }
+
+  try {
+    var saved = localStorage.getItem(KEY);
+    for (var i = 0; i < THEMES.length; i++) {
+      if (THEMES[i].id === saved) { current = i; break; }
+    }
+  } catch (e) { /* 隐私模式下忽略 */ }
+
+  paint(THEMES[current], false);
+
+  if (btn) {
+    btn.addEventListener('click', function () {
+      current = (current + 1) % THEMES.length;
+      paint(THEMES[current], true);
+      try { localStorage.setItem(KEY, THEMES[current].id); } catch (e) {}
+    });
+  }
+
+  /* ---------- 滚动入场 ---------- */
+  var items = document.querySelectorAll('.reveal');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+
+    items.forEach(function (el) { io.observe(el); });
+  } else {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- 首屏跟随鼠标的光晕（仅桌面） ---------- */
+  var hero = document.querySelector('.hero');
+  if (hero && !reduce && window.matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    });
+  }
+
+  /* ---------- 年份 ---------- */
+  var year = document.getElementById('year');
+  if (year) year.textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
